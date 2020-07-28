@@ -1,0 +1,12 @@
+Index: git/cows/elephant.cow
+===================================================================
+--- git.orig/cows/elephant.cow
++++ git/cows/elephant.cow
+@@ -1,6 +1,7 @@
+ ##
+ ## An elephant out and about
+ ##
++##
+ $the_cow = <<EOC;
+  $thoughts     /\\  ___  /\\
+   $thoughts   // \\/   \\/ \\\\
