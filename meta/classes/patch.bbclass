@@ -91,6 +91,28 @@ def should_apply(parm, d):
 
 should_apply[vardepsexclude] = "DATE SRCDATE"
 
+def patch_do_debian_quilt(patchdir, d):
+    import oe.patch
+    class DummyPatchSet(oe.patch.PatchSet):
+        def Clean(self):
+            True
+
+        def Import(self, patch, force):
+            os.putenv('QUILT_PATCHES', 'debian/patches')
+            # push all so we are on top of debian
+            pushed = False
+            if os.path.exists(os.path.join(self.dir, 'debian/patches/series')):
+                oe.patch.runcmd(["quilt", "push", "-a"], self.dir)
+                pushed = True
+            oe.patch.runcmd(["quilt", "import", "-f", os.path.join(d.getVar('WORKDIR'), os.path.basename(patch['file']))], self.dir)
+            if pushed:
+                oe.patch.runcmd(["quilt", "pop", "-a"], self.dir)
+
+        def Push(self, force = False):
+            True
+
+    return DummyPatchSet(patchdir, d)
+
 python patch_do_patch() {
     import sys
 
@@ -117,6 +139,12 @@ python patch_do_patch() {
     classes = {}
 
     s = d.getVar('S')
+
+    debianformat = os.path.join(s, 'debian/source/format')
+    if os.path.exists(debianformat) and d.getVar('PATCHTOOL') != 'quilt':
+        with open(debianformat, 'r+') as f:
+            if f.readline() == '3.0 (quilt)\n':
+                cls = patch_do_debian_quilt
 
     os.putenv('PATH', d.getVar('PATH'))
 
