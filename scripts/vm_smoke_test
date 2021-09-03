@@ -15,6 +15,22 @@ ES_BUG=3
 
 RET=$ES_OK
 
+get_arm64_qemu_efi() {
+    SHA256SUM="07b45bba7eb60eaeb79d798f6648bd262cdc6ad39d8f48f73a5f9c8f4885377c"
+    mkdir -p ~/.cache/isar-tests/
+    cd ~/.cache/isar-tests/
+    echo "$SHA256SUM QEMU_EFI.img" > QEMU_EFI.img.sha256
+    if ! sha256sum -c QEMU_EFI.img.sha256 > /dev/null 2>&1; then
+        # cache miss or update
+	curl http://releases.linaro.org/components/kernel/uefi-linaro/latest/release/qemu64/QEMU_EFI.img.gz -L | zcat > QEMU_EFI.img
+	if ! sha256sum -c QEMU_EFI.img.sha256 > /dev/null 2>&1; then
+		echo "FAIL: could not fetch QEMU_EFI.img"
+		# no need to set RET or FAIL, qemu will get unhappy
+	fi
+    fi
+    cd -
+}
+
 dump_boot_log() {
     echo "Boot log:\n8<--"
     cat $CONSOLE_OUTPUT
@@ -163,6 +179,7 @@ if [ -z "$FAST_BUILD" ]; then
 fi
 
 # ARM64 machine
+get_arm64_qemu_efi
 run_test arm64 stretch
 
 exit $RET
