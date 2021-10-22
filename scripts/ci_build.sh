@@ -14,14 +14,16 @@ export PATH=$PATH:/sbin
 # Go to Isar root
 cd "$(dirname "$0")/.."
 
-# install avocado in virtualenv in case it is not there already
+# install avocado in from deb.isar-build.org in case it is not there already
 if ! command -v avocado > /dev/null; then
     sudo apt-get update -qq
-    sudo apt-get install -y virtualenv
-    rm -rf /tmp/avocado_venv
-    virtualenv --python python3 /tmp/avocado_venv
-    source /tmp/avocado_venv/bin/activate
-    pip install avocado-framework
+    sudo apt-get install gnupg2 lsb-release curl -y
+    codename=$( lsb_release -cs )
+    curl http://deb.isar-build.org/debian-isar.key --output /tmp/isar-gpg.pub
+    sudo apt-key add /tmp/isar-gpg.pub
+    echo "deb http://deb.isar-build.org/debian-isar $codename-isar main" | sudo tee /etc/apt/sources.list.d/isar.list > /dev/null
+    sudo apt-get update -qq
+    sudo apt-get install -y avocado
 fi
 
 # Get Avocado build tests path
