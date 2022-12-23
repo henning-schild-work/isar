@@ -245,9 +245,9 @@ class CIBuilder(Test):
                 if bbdistro and "ubuntu" not in bbdistro:
                     if "sdimage-efi-sd" in wks_file:
                         # output we see when expand-on-first-boot runs on ext4
-                        resize_output = b'resized filesystem to'
+                        resize_output = b'rresized filesystem to'
                     if "sdimage-efi-btrfs" in wks_file:
-                        resize_output = b': resize device '
+                        resize_output = b': rresize device '
 
         timeout = time.time() + int(time_to_wait)
 
