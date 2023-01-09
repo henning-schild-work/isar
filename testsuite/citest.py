@@ -251,7 +251,7 @@ class ContainerImageTest(CIBaseTest):
     """
     Test containerized images creation
 
-    :avocado: tags=containerbuild,fast,full,container
+    :avocado: tags=containerbuild,full,container
     """
     @skipUnless(UMOCI_AVAILABLE and SKOPEO_AVAILABLE, 'umoci/skopeo not found')
     def test_container_image(self):
