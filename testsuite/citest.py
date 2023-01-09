@@ -269,7 +269,7 @@ class ContainerSdkTest(CIBaseTest):
     """
     Test SDK container image creation
 
-    :avocado: tags=containersdk,fast,full,container
+    :avocado: tags=containersdk,full,container
     """
     @skipUnless(UMOCI_AVAILABLE and SKOPEO_AVAILABLE, 'umoci/skopeo not found')
     def test_container_sdk(self):
