@@ -27,7 +27,7 @@ fast-ci:
   except:
     - schedules
   script:
-    - scripts/ci_build.sh -q -f -n
+    - scripts/ci_build.sh -q -f
 
 full-ci:
   <<: *common-build

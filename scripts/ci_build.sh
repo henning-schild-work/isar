@@ -127,6 +127,11 @@ fi
 
 if [ -n "$NORUN" ]; then
     TAGS="$TAGS,-startvm"
+else
+    if ! command -v qemu-system-x86 > /dev/null; then
+        sudo apt-get update -qq
+        sudo apt-get install -y qemu-system
+    fi
 fi
 
 # Provide working path
