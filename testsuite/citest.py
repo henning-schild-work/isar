@@ -283,7 +283,7 @@ class SstateTest(CIBaseTest):
     """
     Test builds with artifacts taken from sstate cache
 
-    :avocado: tags=sstate,fast,full
+    :avocado: tags=sstate,full
     """
     def test_sstate(self):
         image_target = 'mc:qemuamd64-bullseye:isar-image-base'
