@@ -118,7 +118,7 @@ class SdkTest(CIBaseTest):
     """
     In addition test SDK creation
 
-    :avocado: tags=sdk,fast,full
+    :avocado: tags=sdk,full
     """
     def test_sdk(self):
         targets = ['mc:qemuarm-bullseye:isar-image-base']
